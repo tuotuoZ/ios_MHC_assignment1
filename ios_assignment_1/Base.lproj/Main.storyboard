@@ -140,10 +140,10 @@
             </objects>
             <point key="canvasLocation" x="2868" y="44.527736131934034"/>
         </scene>
-        <!--View Controller-->
+        <!--Super Hero View Controller-->
         <scene sceneID="hIK-UI-Z86">
             <objects>
-                <viewController id="qCJ-V4-mtq" sceneMemberID="viewController">
+                <viewController id="qCJ-V4-mtq" customClass="SuperHeroViewController" customModule="ios_assignment_1" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="km9-1b-i3A"/>
                         <viewControllerLayoutGuide type="bottom" id="2Kx-q0-EDd"/>
@@ -157,25 +157,28 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tC8-b6-JTC">
-                                    <size key="itemSize" width="146" height="200"/>
+                                    <size key="itemSize" width="166" height="199"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PosterCell" id="Wyk-be-51x">
-                                        <rect key="frame" x="0.0" y="0.0" width="146" height="200"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PosterCell" id="Wyk-be-51x" customClass="PosterCell" customModule="ios_assignment_1" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="166" height="199"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="146" height="200"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="166" height="199"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2y4-P2-aJr">
-                                                    <rect key="frame" x="0.0" y="0.0" width="146" height="164"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="166" height="199"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <connections>
+                                            <outlet property="posterImageView" destination="2y4-P2-aJr" id="IgS-OY-BtW"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -183,6 +186,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="Egk-WE-dth"/>
+                    <connections>
+                        <outlet property="collectionView" destination="kTv-Zv-ZCP" id="OrH-wE-HoC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D7l-rh-vh9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -213,6 +219,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="eB9-ox-oai" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iNG-os-NvD">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
