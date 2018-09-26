@@ -17,6 +17,17 @@ class SuperHeroViewController: UIViewController, UICollectionViewDataSource  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.minimumInteritemSpacing = 5
+        layout.minimumLineSpacing = layout.minimumInteritemSpacing
+        let cellPerLine: CGFloat = 2
+        let interItemSpacingTotal = layout.minimumInteritemSpacing * (cellPerLine - 1)
+        let width = collectionView.frame.size.width / cellPerLine - interItemSpacingTotal / cellPerLine
+        layout.itemSize = CGSize(width: width, height: width * 3 / 2)
+        
+        
+        
+        
         collectionView.dataSource = self
         fetchMovies()
     }
@@ -28,7 +39,8 @@ class SuperHeroViewController: UIViewController, UICollectionViewDataSource  {
     
     
     func fetchMovies(){
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=d1b54029fde250059112859ad802d27d")!
+        //Changed the url to super hero.
+        let url = URL(string: "https://api.themoviedb.org/3/movie/297762/similar?api_key=d1b54029fde250059112859ad802d27d&language=en-US&page=1")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         let task = session.dataTask(with: request) { (data, response, error) in
@@ -63,14 +75,14 @@ class SuperHeroViewController: UIViewController, UICollectionViewDataSource  {
         }
         return cell
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let cell = sender as! UICollectionViewCell
+        if let indexPath = collectionView.indexPath(for: cell){
+            let movie = movies[indexPath.row]
+            let detailViewController = segue.destination as! DetailViewController
+            detailViewController.movie = movie
+        }
+    }
     
 }
