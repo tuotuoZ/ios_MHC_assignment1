@@ -17,46 +17,35 @@ class NowPlayViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
-    var movies: [[String :Any]] = []
+    var movies: [Movie] = []
     var refreshControl: UIRefreshControl!
     
-    func fetchMovies(){
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=d1b54029fde250059112859ad802d27d")!
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        let task = session.dataTask(with: request) { (data, response, error) in
-            // This is will run when the network request returns
-            if let error = error{
-                print(error.localizedDescription)
-            }else if let data = data {
-                let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-                let movies = dataDictionary["results"] as! [[String: Any]]
-                self.movies = movies
-                self.tableView.reloadData()
-                self.refreshControl.endRefreshing()
-                self.refreshIndicator.stopAnimating()
-                
-                
-            }
-        }
-        task.resume()
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         refreshControl = UIRefreshControl()
         
-        refreshControl.addTarget(self, action: #selector(NowPlayViewController.didPullToRefresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(NowPlayViewController.pullToRefresh(_:)), for: .valueChanged)
         tableView.dataSource = self
         tableView.insertSubview(refreshControl, at: 0)
-        fetchMovies()
-        
+        MovieApiManager().nowPlayingMovies { (movies: [Movie]?, error: Error?) in
+            if let movies = movies {
+                self.movies = movies
+                self.tableView.reloadData()
+            }
+        }
     }
     
-    @objc func didPullToRefresh(_ refreshControl: UIRefreshControl){
-        refreshIndicator.startAnimating()
-        fetchMovies()
+    @objc func pullToRefresh(_ refreshControl: UIRefreshControl) {
+        MovieApiManager().nowPlayingMovies { (movies, error) in
+            if let movies = movies {
+                self.movies = movies
+                self.tableView.reloadData()
+                refreshControl.endRefreshing()
+            }
+        }
     }
     
     
@@ -73,16 +62,7 @@ class NowPlayViewController: UIViewController, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         let movie = movies[indexPath.row]
-        let title = movie["title"] as! String
-        let overview = movie["overview"] as! String
-        cell.titleLabel.text = title
-        cell.overviewLabel.text = overview
-        
-        let posterPathString = movie["poster_path"] as! String
-        let baseURLString = "https://image.tmdb.org/t/p/w500"
-        let posterURL = URL(string: baseURLString + posterPathString)!
-        cell.posterImage.af_setImage(withURL: posterURL)
-        
+        cell.movie = movie
         return cell
     }
     
